@@ -37,10 +37,37 @@ in
           "Mod+T".action = spawn "foot";
         };
 
+        prefer-no-csd = true;
+
         input = {
           keyboard.xkb.layout = "de";
           mouse = {
             natural-scroll = true;
+          };
+        };
+
+        outputs = {
+          "eDP-1" = {
+            scale = 1.25;
+            mode = {
+              width = 1920;
+              height = 1200;
+            };
+            position = {
+              x = 0;
+              y = 0;
+            };
+          };
+          "DP-4" = {
+            scale = 1.25;
+            mode = {
+              width = 5120;
+              height = 2160;
+            };
+            position = {
+              x = -4096; # 5120 / 1.25 * -1
+              y = -1248; # (2160 - 1200 / 2) / 1.25 * -1
+            };
           };
         };
 
@@ -61,8 +88,6 @@ in
             clip-to-geometry = true;
           }
         ];
-
-        prefer-no-csd = true;
       };
     };
   };
