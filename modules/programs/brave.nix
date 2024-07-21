@@ -1,9 +1,7 @@
-{ config, ... }:
+{ hmConfig }:
 {
-  home-manager.users."${config.extra.username}" = {
+  home-manager.users."${hmConfig.username}" = {
     programs.brave.enable = true;
-    home.persistence."${config.extra.homePersistDir}".directories = [
-      ".config/BraveSoftware/Brave-Browser"
-    ];
+    home.persistence."${hmConfig.persistDir}".directories = [ ".config/BraveSoftware/Brave-Browser" ];
   };
 }

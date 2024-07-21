@@ -1,29 +1,33 @@
 {
   config,
+  extraLib,
   inputs,
+  osConfig,
   pkgs,
-  ...
 }:
 let
-  homeDirectory = "/home/${username}";
-  homePersistDir = "${config.extra.persistDir}${homeDirectory}";
   username = "johe";
+  homeDirectory = "/home/${username}";
+  persistDir = "${osConfig.persistDir}${homeDirectory}";
+  callPackage = extraLib.callPackageWith {
+    inherit pkgs;
+    hmConfig = {
+      inherit username;
+      inherit homeDirectory;
+      inherit persistDir;
+      lib = config.home-manager.users."${username}".lib;
+    };
+  };
 in
 {
-  extra = {
-    homeManager = config.home-manager.users."${username}";
-    inherit homePersistDir;
-    inherit username;
-  };
-
   imports = [
-    ../modules/programs/brave.nix
-    ../modules/programs/foot.nix
-    ../modules/programs/git.nix
-    ../modules/programs/niri.nix
-    ../modules/programs/zed-editor.nix
-    ../modules/programs/zoxide.nix
-    ../modules/programs/zsh.nix
+    (callPackage ../modules/programs/brave.nix)
+    (callPackage ../modules/programs/foot.nix)
+    (callPackage ../modules/programs/git.nix)
+    (callPackage ../modules/programs/niri.nix)
+    (callPackage ../modules/programs/zed-editor.nix)
+    (callPackage ../modules/programs/zoxide.nix)
+    (callPackage ../modules/programs/zsh.nix)
   ];
 
   users.users.${username} = {
@@ -32,7 +36,7 @@ in
       "wheel"
       "networkmanager"
     ];
-    hashedPasswordFile = "${config.extra.persistDir}/passwords/${username}";
+    hashedPasswordFile = "${persistDir}/passwords/${username}";
     packages = [ pkgs.xdg-utils ];
   };
 
@@ -45,7 +49,7 @@ in
       inherit username;
       inherit homeDirectory;
 
-      persistence."${homePersistDir}" = {
+      persistence."${persistDir}" = {
         directories = [
           ".local/state/wireplumber"
           "nixos-config"

@@ -1,9 +1,7 @@
-{ config, ... }:
+{ hmConfig }:
 {
-  home-manager.users."${config.extra.username}" = {
+  home-manager.users."${hmConfig.username}" = {
     programs.zoxide.enable = true;
-    home.persistence."${config.extra.homePersistDir}".directories = [
-      ".local/share/zoxide"
-    ];
+    home.persistence."${hmConfig.persistDir}".directories = [ ".local/share/zoxide" ];
   };
 }

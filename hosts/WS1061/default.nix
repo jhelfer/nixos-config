@@ -1,26 +1,28 @@
 {
   config,
+  extraLib,
   inputs,
-  lib,
   pkgs,
   ...
 }:
 let
-  persistDir = "/persist";
+  callPackage = extraLib.callPackageWith {
+    inherit config;
+    inherit pkgs;
+    osConfig = {
+      luksDevice = "crypted";
+      persistDir = "/persist";
+      pkiBundle = "/etc/secureboot";
+    };
+  };
 in
 {
-  extra = {
-    inherit persistDir;
-    luksDevice = "crypted";
-    pkiBundle = "/etc/secureboot";
-  };
-
   imports = [
     inputs.home-manager.nixosModules.home-manager
-    ./disks.nix
-    ../../modules/secure-boot.nix
-    ../../modules/persistence.nix
-    ../../users/johe.nix
+    (callPackage ./disks.nix)
+    (callPackage ../../modules/secure-boot.nix)
+    (callPackage ../../modules/persistence.nix)
+    (callPackage ../../users/johe.nix)
   ];
 
   boot = {

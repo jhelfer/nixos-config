@@ -1,10 +1,4 @@
-{
-  inputs,
-  luksDevice,
-  persistDir,
-  config,
-  ...
-}:
+{ inputs, osConfig }:
 {
   imports = [ inputs.disko.nixosModules.disko ];
 
@@ -30,7 +24,7 @@
               size = "100%";
               content = {
                 type = "luks";
-                name = "${config.extra.luksDevice}";
+                name = "${osConfig.luksDevice}";
                 settings = {
                   allowDiscards = true;
                 };
@@ -38,7 +32,7 @@
                   type = "btrfs";
                   extraArgs = [ "-f" ];
                   postCreateHook = ''
-                    mount -o subvol=/ /dev/mapper/${config.extra.luksDevice} /mnt
+                    mount -o subvol=/ /dev/mapper/${osConfig.luksDevice} /mnt
                     btrfs subvolume snapshot -r /mnt/root /mnt/root-blank
                     umount /mnt
                   '';
@@ -57,8 +51,8 @@
                         "noatime"
                       ];
                     };
-                    "${config.extra.persistDir}" = {
-                      mountpoint = "${config.extra.persistDir}";
+                    "${osConfig.persistDir}" = {
+                      mountpoint = "${osConfig.persistDir}";
                       mountOptions = [
                         "compress=zstd"
                         "noatime"
@@ -78,5 +72,5 @@
     };
   };
 
-  fileSystems."${config.extra.persistDir}".neededForBoot = true;
+  fileSystems."${osConfig.persistDir}".neededForBoot = true;
 }

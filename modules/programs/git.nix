@@ -1,6 +1,6 @@
-{ config, pkgs, ... }:
+{ hmConfig, pkgs }:
 {
-  home-manager.users."${config.extra.username}" = {
+  home-manager.users."${hmConfig.username}" = {
     programs.git = {
       enable = true;
       userName = "Jonathan Helfer";

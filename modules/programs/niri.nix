@@ -1,21 +1,20 @@
 {
+  hmConfig,
   inputs,
   pkgs,
-  config,
-  ...
 }:
 let
   package = pkgs.niri-unstable;
 in
 {
-  home-manager.users.${config.extra.username} = {
+  home-manager.users.${hmConfig.username} = {
     imports = [ inputs.niri.homeModules.niri ];
 
     programs.niri = {
       enable = true;
       inherit package;
       settings = {
-        binds = with config.extra.homeManager.lib.niri.actions; {
+        binds = with hmConfig.lib.niri.actions; {
           "XF86AudioMute".action = spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle";
           "XF86AudioRaiseVolume".action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%+";
           "XF86AudioLowerVolume".action = spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "5%-";

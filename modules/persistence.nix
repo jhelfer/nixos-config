@@ -2,6 +2,7 @@
   config,
   inputs,
   lib,
+  osConfig,
   ...
 }:
 {
@@ -12,7 +13,7 @@
     services.rollback = {
       description = "Rollback btrfs root subvolume to initial state";
       wantedBy = [ "initrd.target" ];
-      after = [ "systemd-cryptsetup@${config.extra.luksDevice}.service" ];
+      after = [ "systemd-cryptsetup@${osConfig.luksDevice}.service" ];
       before = [ "sysroot.mount" ];
       unitConfig.DefaultDependencies = "no";
       serviceConfig.Type = "oneshot";
@@ -21,7 +22,7 @@
 
         # We first mount the btrfs root to /mnt
         # so we can manipulate btrfs subvolumes.
-        mount -o subvol=/ /dev/mapper/${config.extra.luksDevice} /mnt
+        mount -o subvol=/ /dev/mapper/${osConfig.luksDevice} /mnt
 
         # While we're tempted to just delete /root and create
         # a new snapshot from /root-blank, /root is already
@@ -47,7 +48,7 @@
     };
   };
 
-  environment.persistence."${config.extra.persistDir}" = {
+  environment.persistence."${osConfig.persistDir}" = {
     hideMounts = true;
     directories = [
       "/etc/NetworkManager/system-connections"
@@ -65,9 +66,9 @@
       mkHomePersist =
         user:
         lib.optionalString user.createHome ''
-          mkdir -p ${config.extra.persistDir}/${user.home}
-          chown ${user.name}:${user.group} ${config.extra.persistDir}/${user.home}
-          chmod ${user.homeMode} ${config.extra.persistDir}/${user.home}
+          mkdir -p ${osConfig.persistDir}/${user.home}
+          chown ${user.name}:${user.group} ${osConfig.persistDir}/${user.home}
+          chmod ${user.homeMode} ${osConfig.persistDir}/${user.home}
         '';
       users = lib.attrValues config.users.users;
     in

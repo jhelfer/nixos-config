@@ -1,14 +1,14 @@
-{ pkgs, config, ... }:
+{ hmConfig }:
 {
-  home-manager.users."${config.extra.username}" = {
+  home-manager.users."${hmConfig.username}" = {
     programs.zsh = {
       enable = true;
-      history.path = "${config.extra.homeManager.home.homeDirectory}/.local/state/zsh/history";
+      history.path = "${hmConfig.homeDirectory}/.local/state/zsh/history";
       initExtra = ''
         rebuild() { sudo nixos-rebuild ''${1:=test} --flake "/persist/etc/nixos-config" }
       '';
     };
 
-    home.persistence."${config.extra.homePersistDir}".directories = [ ".local/state/zsh" ];
+    home.persistence."${hmConfig.persistDir}".directories = [ ".local/state/zsh" ];
   };
 }

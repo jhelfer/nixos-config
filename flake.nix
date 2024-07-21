@@ -30,6 +30,23 @@
     let
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
+      extraLib = {
+        callPackageWith =
+          overrides: path:
+          let
+            f = import path;
+          in
+          f (
+            (builtins.intersectAttrs (builtins.functionArgs f) (
+              {
+                inherit inputs;
+                inherit extraLib;
+              }
+              // pkgs
+              // overrides
+            ))
+          );
+      };
     in
     {
       formatter.${system} = pkgs.nixfmt-rfc-style;
@@ -37,15 +54,9 @@
         WS1061 = nixpkgs.lib.nixosSystem {
           specialArgs = {
             inherit inputs;
+            inherit extraLib;
           };
-          modules = [
-            {
-              options = {
-                extra = nixpkgs.lib.mkOption { };
-              };
-            }
-            ./hosts/WS1061
-          ];
+          modules = [ ./hosts/WS1061 ];
         };
       };
     };

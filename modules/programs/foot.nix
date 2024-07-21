@@ -1,6 +1,6 @@
-{ config, ... }:
+{ hmConfig }:
 {
-  home-manager.users."${config.extra.username}" = {
+  home-manager.users."${hmConfig.username}" = {
     programs.foot = {
       enable = true;
       settings = {
