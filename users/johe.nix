@@ -36,7 +36,7 @@ in
       "wheel"
       "networkmanager"
     ];
-    hashedPasswordFile = "${persistDir}/passwords/${username}";
+    hashedPasswordFile = "${osConfig.persistDir}/passwords/${username}";
     packages = [ pkgs.xdg-utils ];
   };
 
@@ -52,6 +52,7 @@ in
       persistence."${persistDir}" = {
         directories = [
           ".local/state/wireplumber"
+          "dev"
           "nixos-config"
         ];
         allowOther = true;

@@ -101,5 +101,7 @@ in
 
   nixpkgs.overlays = [ inputs.niri.overlays.niri ];
 
+  services.gnome.gnome-keyring.enable = true;
+
   hardware.graphics.enable = true;
 }
