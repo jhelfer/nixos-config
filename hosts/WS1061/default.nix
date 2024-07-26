@@ -20,6 +20,7 @@ in
   imports = [
     inputs.home-manager.nixosModules.home-manager
     (callPackage ./disks.nix)
+    (callPackage ../../modules/services/postgresql.nix)
     (callPackage ../../modules/secure-boot.nix)
     (callPackage ../../modules/persistence.nix)
     (callPackage ../../users/johe.nix)
@@ -59,7 +60,13 @@ in
 
   users.defaultUserShell = pkgs.zsh;
 
-  programs.zsh.enable = true;
+  programs = {
+    zsh.enable = true;
+    nix-ld = {
+      enable = true;
+      package = inputs.nix-ld-rs.packages.${pkgs.hostPlatform.system}.nix-ld-rs;
+    };
+  };
 
   fonts.enableDefaultPackages = true;
 

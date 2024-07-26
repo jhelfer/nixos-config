@@ -9,3 +9,10 @@ mkdir /mnt/persist/passwords
 mkpasswd -m sha-512 > /mnt/persist/passwords/johe
 nixos-install --flake /tmp/nixos-config#WS1061
 ```
+
+Setup VPN (OpenConnect - FortiVPN)
+
+```
+nix-shell -p networkmanagerapplet
+nm-connection-editor
+```

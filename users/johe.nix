@@ -22,6 +22,7 @@ in
 {
   imports = [
     (callPackage ../modules/programs/brave.nix)
+    (callPackage ../modules/programs/direnv.nix)
     (callPackage ../modules/programs/foot.nix)
     (callPackage ../modules/programs/git.nix)
     (callPackage ../modules/programs/niri.nix)
@@ -35,6 +36,7 @@ in
     extraGroups = [
       "wheel"
       "networkmanager"
+      "docker"
     ];
     hashedPasswordFile = "${osConfig.persistDir}/passwords/${username}";
     packages = [ pkgs.xdg-utils ];
@@ -52,6 +54,7 @@ in
       persistence."${persistDir}" = {
         directories = [
           ".local/state/wireplumber"
+          ".m2"
           "dev"
           "nixos-config"
         ];
@@ -60,5 +63,10 @@ in
 
       stateVersion = "24.11";
     };
+  };
+
+  virtualisation.docker = {
+    enable = true;
+    storageDriver = "btrfs";
   };
 }
