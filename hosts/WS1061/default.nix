@@ -60,6 +60,11 @@ in
 
   users.defaultUserShell = pkgs.zsh;
 
+  home-manager = {
+    useGlobalPkgs = true;
+    useUserPackages = true;
+  };
+
   programs = {
     zsh.enable = true;
     nix-ld = {

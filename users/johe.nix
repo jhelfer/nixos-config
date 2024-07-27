@@ -26,6 +26,7 @@ in
     (callPackage ../modules/programs/foot.nix)
     (callPackage ../modules/programs/git.nix)
     (callPackage ../modules/programs/niri.nix)
+    (callPackage ../modules/programs/vscode.nix)
     (callPackage ../modules/programs/zed-editor.nix)
     (callPackage ../modules/programs/zoxide.nix)
     (callPackage ../modules/programs/zsh.nix)
