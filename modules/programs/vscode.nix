@@ -8,6 +8,7 @@
         "diffEditor.hideUnchangedRegions.enabled" = true;
         "diffEditor.ignoreTrimWhitespace" = false;
         "git.autofetch" = true;
+        "git.mergeEditor" = true;
         "window.titleBarStyle" = "custom";
       };
       extensions = with pkgs.vscode-extensions; [
